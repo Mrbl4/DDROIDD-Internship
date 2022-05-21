@@ -1,9 +1,10 @@
 import java.util.*;
 
-public class ProductCatalog {
+public class ProductsAdmin {
 
     private List<Product> productCatalog = new ArrayList<>();
     private Map<Product, Integer> shoppingCart = new HashMap<>();
+    private Invoice invoice;
 
     private Product mouse = new Product("Mouse", 10.99, "RO", 0.2);
     private Product keyboard = new Product("Keyboard", 40.99, "UK", 0.7);
@@ -12,13 +13,14 @@ public class ProductCatalog {
     private Product headphones = new Product("Headphones", 59.99, "US", 0.6);
     private Product deskLamp = new Product("DeskLamp", 89.99, "UK", 1.3);
 
-    public ProductCatalog() {
+    public ProductsAdmin() {
         productCatalog.add(mouse);
         productCatalog.add(keyboard);
         productCatalog.add(monitor);
         productCatalog.add(webcam);
         productCatalog.add(headphones);
         productCatalog.add(deskLamp);
+        this.invoice = new Invoice();
     }
 
 
@@ -52,7 +54,7 @@ public class ProductCatalog {
                     break;
                 case "Keyboard":
                     keyboardQuantity++;
-                    this.shoppingCart.put(keyboard,keyboardQuantity);
+                    this.shoppingCart.put(keyboard, keyboardQuantity);
                     viewShoppingCart();
                     option = scanner.next();
                     break;
@@ -64,7 +66,7 @@ public class ProductCatalog {
                     break;
                 case "Webcam":
                     webcamQuantity++;
-                    this.shoppingCart.put( webcam, webcamQuantity);
+                    this.shoppingCart.put(webcam, webcamQuantity);
                     viewShoppingCart();
                     option = scanner.next();
                     break;
@@ -80,16 +82,36 @@ public class ProductCatalog {
                     viewShoppingCart();
                     option = scanner.next();
                     break;
-                default: option = scanner.next();
+                default:
+                    option = scanner.next();
             }
         }
     }
 
     public void viewShoppingCart() {
-        for (Map.Entry<Product,Integer> entry : shoppingCart.entrySet()) {
+        for (Map.Entry<Product, Integer> entry : shoppingCart.entrySet()) {
             if (!entry.getKey().equals(null)) {
                 System.out.println(entry.getKey().getItemName() + " * " + entry.getValue());
             }
         }
+    }
+
+    public void generateInvoice() {
+
+        Double subtotal = 0.0;
+        Double shippingFee = 0.0;
+        Double vat = 0.0;
+
+        for (Map.Entry<Product, Integer> entry : shoppingCart.entrySet()) {
+                subtotal += entry.getValue() * entry.getKey().getItemPrice();
+                shippingFee += entry.getValue() * entry.getKey().getShippingFee();
+                vat += entry.getValue() * entry.getKey().getVAT();
+            }
+
+        invoice.setSubtotal(subtotal);
+        invoice.setShippingFee(shippingFee);
+        invoice.setTotalVat(vat);
+
+        System.out.println(invoice);
     }
 }

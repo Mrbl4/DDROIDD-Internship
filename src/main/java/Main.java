@@ -2,9 +2,10 @@ public class Main {
 
     public static void main(String[] args) {
 
-        ProductCatalog productCatalog = new ProductCatalog();
+        ProductsAdmin productCatalog = new ProductsAdmin();
         productCatalog.displayCatalogProducts();
         productCatalog.updateShoppingCart();
-
+        productCatalog.viewShoppingCart();
+        productCatalog.generateInvoice();
     }
 }

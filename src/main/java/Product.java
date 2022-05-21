@@ -5,6 +5,7 @@ public class Product {
     private String shippedFrom;
     private Double weight;
     private Double shippingFee;
+    private Double VAT;
 
 
     public Product(String itemName, Double itemPrice, String shippedFrom, Double weight) {
@@ -13,6 +14,7 @@ public class Product {
         this.shippedFrom = shippedFrom;
         this.weight = weight;
         setShippingFee();
+        this.VAT = itemPrice * 0.19;
     }
 
     public void setShippingFee() {
@@ -76,5 +78,13 @@ public class Product {
 
     public void setShippingFee(Double shippingFee) {
         this.shippingFee = shippingFee;
+    }
+
+    public Double getVAT() {
+        return VAT;
+    }
+
+    public void setVAT(Double VAT) {
+        this.VAT = VAT;
     }
 }
