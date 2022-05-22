@@ -17,7 +17,7 @@ public class Product {
         this.VAT = itemPrice * 0.19;
     }
 
-    public void setShippingFee() {
+    private void setShippingFee() {
         if (shippedFrom.equals("RO")){
             this.shippingFee = Double.valueOf(Math.round(weight * 1/0.1));
         }
@@ -44,47 +44,17 @@ public class Product {
         return itemName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
     public Double getItemPrice() {
         return itemPrice;
-    }
-
-    public void setItemPrice(Double itemPrice) {
-        this.itemPrice = itemPrice;
-    }
-
-    public String getShippedFrom() {
-        return shippedFrom;
-    }
-
-    public void setShippedFrom(String shippedFrom) {
-        this.shippedFrom = shippedFrom;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
     }
 
     public Double getShippingFee() {
         return shippingFee;
     }
 
-    public void setShippingFee(Double shippingFee) {
-        this.shippingFee = shippingFee;
-    }
-
     public Double getVAT() {
         return VAT;
     }
 
-    public void setVAT(Double VAT) {
-        this.VAT = VAT;
-    }
+
 }

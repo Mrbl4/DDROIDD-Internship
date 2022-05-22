@@ -1,16 +1,15 @@
+import java.text.DecimalFormat;
+
 public class Invoice {
 
     private Double subtotal;
     private Double shippingFee;
     private Double totalVat;
-//    private Double discount;
-
-//    public Invoice(Double subtotal, Double shippingFee, Double totalVat, Double discount) {
-//        this.subtotal = subtotal;
-//        this.shippingFee = shippingFee;
-//        this.totalVat = totalVat;
-//        this.discount = discount;
-//    }
+    private Double keyboardDiscount;
+    private Double deskLampDiscount;
+    private Double shippingFeeDiscount;
+    private Double totalDiscounts;
+    private Double total;
 
     public Invoice() {
     }
@@ -27,16 +26,56 @@ public class Invoice {
         this.totalVat = totalVat;
     }
 
-//    public void setDiscount(Double discount) {
-//        this.discount = discount;
-//    }
+    public Double getKeyboardDiscount() {
+        return keyboardDiscount;
+    }
 
-    @Override
-    public String toString() {
-        return "Invoice: \n" + "Subtotal: $" + subtotal + "\n" +
-                "Shipping: $" + shippingFee + "\n" +
-                "VAT: $" + totalVat + "\n" +
-//                "Discounts: $" + discount +
-                "TOTAL: $" + (shippingFee+subtotal+totalVat);
+    public void setKeyboardDiscount(Double keyboardDiscount) {
+        this.keyboardDiscount = keyboardDiscount;
+    }
+
+    public Double getDeskLampDiscount() {
+        return deskLampDiscount;
+    }
+
+    public void setDeskLampDiscount(Double deskLampDiscount) {
+        this.deskLampDiscount = deskLampDiscount;
+    }
+
+    public void setShippingFeeDiscount(Double shippingFeeDiscount) {
+        this.shippingFeeDiscount = shippingFeeDiscount;
+    }
+
+    public void setTotalDiscounts(Double totalDiscounts) {
+        this.totalDiscounts = totalDiscounts;
+    }
+
+    public Double getSubtotal() {
+        return subtotal;
+    }
+
+    public Double getShippingFee() {
+        return shippingFee;
+    }
+
+    public Double getTotalVat() {
+        return totalVat;
+    }
+
+    public Double getShippingFeeDiscount() {
+        return shippingFeeDiscount;
+    }
+
+    public Double getTotalDiscounts() {
+        return totalDiscounts;
+    }
+
+    public void setTotal() {
+        this.total = this.subtotal+this.totalVat+this.shippingFee-this.totalDiscounts;
+    }
+
+    public Double getTotal() {
+        return total;
     }
 }
+
