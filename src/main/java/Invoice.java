@@ -1,5 +1,3 @@
-import java.text.DecimalFormat;
-
 public class Invoice {
 
     private Double subtotal;
@@ -66,15 +64,11 @@ public class Invoice {
         return shippingFeeDiscount;
     }
 
-    public Double getTotalDiscounts() {
-        return totalDiscounts;
-    }
-
     public void setTotal() {
         this.total = this.subtotal+this.totalVat+this.shippingFee-this.totalDiscounts;
     }
 
-    public Double getTotal() {
+    public double getTotal() {
         return total;
     }
 }
