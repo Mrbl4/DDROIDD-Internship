@@ -6,6 +6,7 @@ public class ProductsApp {
 
         productsAdmin.displayCatalogProducts();
         productsAdmin.createShoppingCart();
+        productsAdmin.calculateInvoice(productsAdmin.getShoppingCart());
         productsAdmin.printInvoice();
 
     }

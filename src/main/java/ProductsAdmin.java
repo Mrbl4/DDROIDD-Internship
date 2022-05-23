@@ -1,4 +1,3 @@
-import java.sql.SQLOutput;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -6,29 +5,23 @@ public class ProductsAdmin {
 
     private final List<Product> productCatalog = new ArrayList<>();
     private Map<Product, Integer> shoppingCart = new HashMap<>();
-    private Invoice invoice;
+    private final Invoice invoice;
 
-    private final Product mouse = new Product("Mouse", 10.99, "RO", 0.2);
-    private final Product keyboard = new Product("Keyboard", 40.99, "UK", 0.7);
-    private final Product monitor = new Product("Monitor", 164.99, "US", 1.9);
-    private final Product webcam = new Product("Webcam", 84.99, "RO", 0.2);
-    private final Product headphones = new Product("Headphones", 59.99, "US", 0.6);
-    private final Product deskLamp = new Product("DeskLamp", 89.99, "UK", 1.3);
+    public static final String MONITOR = "Monitor";
+    public static final String MOUSE = "Mouse";
+    public static final String WEBCAM = "Webcam";
+    public static final String KEYBOARD = "Keyboard";
+    public static final String HEADPHONES = "Headphones";
+    public static final String DESKLAMP = "DeskLamp";
 
     public ProductsAdmin() {
 
-        productCatalog.add(mouse);
-        productCatalog.add(keyboard);
-        productCatalog.add(monitor);
-        productCatalog.add(webcam);
-        productCatalog.add(headphones);
-        productCatalog.add(deskLamp);
-//        productCatalog.add(new Product("Mouse", 10.99, "RO", 0.2));
-//        productCatalog.add(new Product("Keyboard", 40.99, "UK", 0.7));
-//        productCatalog.add(new Product("Monitor", 164.99, "US", 1.9));
-//        productCatalog.add(new Product("Webcam", 84.99, "RO", 0.2));
-//        productCatalog.add(new Product("Headphones", 59.99, "US", 0.6));
-//        productCatalog.add(new Product("DeskLamp", 89.99, "UK", 1.3));
+        productCatalog.add(new Product(MOUSE, 10.99, "RO", 0.2));
+        productCatalog.add(new Product(KEYBOARD, 40.99, "UK", 0.7));
+        productCatalog.add(new Product(MONITOR, 164.99, "US", 1.9));
+        productCatalog.add(new Product(WEBCAM, 84.99, "RO", 0.2));
+        productCatalog.add(new Product(HEADPHONES, 59.99, "US", 0.6));
+        productCatalog.add(new Product(DESKLAMP, 89.99, "UK", 1.3));
         this.invoice = new Invoice();
 
     }
@@ -39,12 +32,14 @@ public class ProductsAdmin {
     public void displayCatalogProducts() {
         System.out.println("Product Catalog: ");
         for (Product p : productCatalog) {
-            System.out.println(p.getItemName() + " - $" + p.getItemPrice());
+            System.out.println("  " + p.getItemName() + " - $" + p.getItemPrice());
         }
-        System.out.println("Please ");
     }
 
-
+    /**
+     * creates the shopping cart, based on the inputs entered by the customer. generated a preview of the shopping cart
+     * after the user types "checkout"
+     */
     public void createShoppingCart() {
 
         Scanner scanner = new Scanner(System.in);
@@ -54,56 +49,63 @@ public class ProductsAdmin {
         int webcamQuantity = 0;
         int headphonesQuantity = 0;
         int deskLampQuantity = 0;
+
         System.out.println("Please type the name of the item you want to buy. When you finish type 'checkout'");
+
         String option = scanner.next();
+
         while (!option.equals("checkout")) {
             switch (option) {
-                case "Mouse":
+                case MOUSE:
                     mouseQuantity++;
-                    this.shoppingCart.put(mouse, mouseQuantity);
+                    this.shoppingCart.put(getProductByName(MOUSE), mouseQuantity);
                     viewShoppingCart();
                     option = scanner.next();
                     break;
-                case "Keyboard":
+                case KEYBOARD:
                     keyboardQuantity++;
-                    this.shoppingCart.put(keyboard, keyboardQuantity);
+                    this.shoppingCart.put(getProductByName(KEYBOARD), keyboardQuantity);
                     viewShoppingCart();
                     option = scanner.next();
                     break;
-                case "Monitor":
+                case MONITOR:
                     monitorQuantity++;
-                    this.shoppingCart.put(monitor, monitorQuantity);
+                    this.shoppingCart.put(getProductByName(MONITOR), monitorQuantity);
                     viewShoppingCart();
                     option = scanner.next();
                     break;
-                case "Webcam":
+                case WEBCAM:
                     webcamQuantity++;
-                    this.shoppingCart.put(webcam, webcamQuantity);
+                    this.shoppingCart.put(getProductByName(WEBCAM), webcamQuantity);
                     viewShoppingCart();
                     option = scanner.next();
                     break;
-                case "Headphones":
+                case HEADPHONES:
                     headphonesQuantity++;
-                    this.shoppingCart.put(headphones, headphonesQuantity);
+                    this.shoppingCart.put(getProductByName(HEADPHONES), headphonesQuantity);
                     viewShoppingCart();
                     option = scanner.next();
                     break;
-                case "DeskLamp":
+                case DESKLAMP:
                     deskLampQuantity++;
-                    this.shoppingCart.put(deskLamp, deskLampQuantity);
+                    this.shoppingCart.put(getProductByName(DESKLAMP), deskLampQuantity);
                     viewShoppingCart();
                     option = scanner.next();
                     break;
                 default:
+                    System.out.println("Invalid product name, please enter again");
                     option = scanner.next();
             }
         }
         viewShoppingCart();
     }
 
+    /**
+     * lists the shopping cart containing items
+     */
     public void viewShoppingCart() {
         for (Map.Entry<Product, Integer> entry : shoppingCart.entrySet()) {
-            if (!entry.getKey().equals(null)) {
+            if (entry.getKey() != null) {
                 System.out.println(entry.getKey().getItemName() + " * " + entry.getValue());
             }
         }
@@ -114,11 +116,11 @@ public class ProductsAdmin {
      *
      * @return the total amount of USD that needs to be paid
      */
-    private void calculateInvoice(Map<Product, Integer> shoppingCart) {
+    public void calculateInvoice(Map<Product, Integer> shoppingCart) {
 
-        Double subtotal = 0.0;
-        Double shippingFee = 0.0;
-        Double vat = 0.0;
+        double subtotal = 0.0;
+        double shippingFee = 0.0;
+        double vat = 0.0;
 
         for (Map.Entry<Product, Integer> entry : shoppingCart.entrySet()) {
             subtotal += entry.getValue() * entry.getKey().getItemPrice();
@@ -135,40 +137,24 @@ public class ProductsAdmin {
     }
 
     /**
-     * checks for the special offers conditions and calculates the Invoice's discounts based on each condition:
+     * checks for the special offers eligibility and calculates the Invoice's discounts, based on the conditions bellow:
      * 10% off Keyboards, 50% discount on Desk Lamp if you buy 2 Monitors, $10 shipping fee discount if you buy 2 or more products
-     *
-     * @return the total sum of discounts
      */
     private void setDiscounts() {
 
         Double totalDiscounts = 0.0;
-        boolean hasLamp = false;
-        Double deskLampPrice = 0.0;
 
-//        if (shoppingCart.containsKey(monitor) && shoppingCart.containsKey(deskLamp)) {
+        for (Product p : shoppingCart.keySet()) {
 
-        Set<Product> products = shoppingCart.keySet();
-
-        //check if the cart has DeskLamp
-        for (Product p: products){
-            if (p.getItemName().equals("DeskLamp")){
-                hasLamp = true;
-                deskLampPrice = p.getItemPrice();
-            }
-        }
-
-        for (Product p : products) {
-
-            if (p.getItemName().equals("Monitor")) {
+            if (p.getItemName().equals(MONITOR)) {
                 int n = shoppingCart.get(p);
-                if ((n >= 2) && hasLamp) {
-                    invoice.setDeskLampDiscount(deskLampPrice * 0.5);
+                if ((n >= 2) && hasLamp()) {
+                    invoice.setDeskLampDiscount(getProductByName(DESKLAMP).getItemPrice() * 0.5);
                     totalDiscounts += invoice.getDeskLampDiscount();
                 }
             }
 
-            if (p.getItemName().equals("Keyboard")) {
+            if (p.getItemName().equals(KEYBOARD)) {
                 int n = shoppingCart.get(p);
                 invoice.setKeyboardDiscount(n * p.getItemPrice() * 0.1);
                 totalDiscounts += invoice.getKeyboardDiscount();
@@ -176,46 +162,69 @@ public class ProductsAdmin {
 
         }
 
-            int noOfProducts = 0;
-            List<Integer> productsQuantity = new ArrayList<>(shoppingCart.values());
-            for (Integer i : productsQuantity) {
-                noOfProducts += i;
-            }
-
-            if (noOfProducts >= 2) {
-                invoice.setShippingFeeDiscount(10.0);
-                totalDiscounts += invoice.getShippingFeeDiscount();
-            }
-
-            invoice.setTotalDiscounts(totalDiscounts);
+        if (shoppingCart.values().size() >= 2) {
+            invoice.setShippingFeeDiscount(10.0);
+            totalDiscounts += invoice.getShippingFeeDiscount();
         }
 
-
-        String printInvoice() {
-
-            calculateInvoice(shoppingCart);
-
-            DecimalFormat df = new DecimalFormat("##.##");
-
-            System.out.println("Invoice: \n" + "Subtotal: $" + df.format(invoice.getSubtotal()) + "\n" +
-                    "Shipping: $" + df.format(invoice.getShippingFee()) + "\n" +
-                    "VAT: $" + df.format(invoice.getTotalVat()));
-            if (!(invoice.getKeyboardDiscount() == null)) {
-                System.out.println("Discounts: \n" + "10% off keyboards: -$" + df.format(invoice.getKeyboardDiscount()));
-            }
-            if (!(invoice.getShippingFeeDiscount() == null)) {
-                System.out.println("$10 off shipping: -$" + df.format(invoice.getShippingFeeDiscount()));
-            }
-            if (!(invoice.getDeskLampDiscount() == null)) {
-                System.out.println("50% discount on DeskLamp: -$" + df.format(invoice.getDeskLampDiscount()));
-            }
-            System.out.println("TOTAL: $" + df.format(invoice.getTotal()));
-
-            return df.format((invoice.getTotal()));
-        }
-
-        public void setShoppingCart (Map < Product, Integer > shoppingCart){
-            this.shoppingCart = shoppingCart;
-        }
+        invoice.setTotalDiscounts(totalDiscounts);
     }
+
+    /**
+     * Displays the detailed Invoice, containing Subtotal, Shipping Fee, total VAT and detailed Discounts values
+     * @return the total of the Invoice
+     */
+    String printInvoice() {
+
+        DecimalFormat df = new DecimalFormat("##.##");
+
+        System.out.println("Invoice: \n" + "Subtotal: $" + df.format(invoice.getSubtotal()) + "\n" +
+                "Shipping: $" + df.format(invoice.getShippingFee()) + "\n" +
+                "VAT: $" + df.format(invoice.getTotalVat()));
+        if (invoice.getKeyboardDiscount() != null) {
+            System.out.println("Discounts: \n" + "10% off keyboards: -$" + df.format(invoice.getKeyboardDiscount()));
+        }
+        if (invoice.getShippingFeeDiscount() != null) {
+            System.out.println("$10 off shipping: -$" + df.format(invoice.getShippingFeeDiscount()));
+        }
+        if (invoice.getDeskLampDiscount() != null) {
+            System.out.println("50% discount on DeskLamp: -$" + df.format(invoice.getDeskLampDiscount()));
+        }
+        System.out.println("TOTAL: $" + df.format(invoice.getTotal()));
+
+        return df.format((invoice.getTotal()));
+    }
+
+    /**
+     * checks if the shopping cart contains DeskLamp, in order to apply the special offer of 50% off if you buy 2 Monitors
+     * @return
+     */
+    private boolean hasLamp() {
+        for (Product p : shoppingCart.keySet()) {
+            if (p.getItemName().equals(DESKLAMP)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setShoppingCart(Map<Product, Integer> shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
+    public Map<Product, Integer> getShoppingCart() {
+        return shoppingCart;
+    }
+
+    private Product getProductByName(String name) {
+        for (Product p : productCatalog) {
+            if (p.getItemName().equalsIgnoreCase(name)) {
+                return p;
+            }
+        }
+        return null;
+    }
+}
+
+
 

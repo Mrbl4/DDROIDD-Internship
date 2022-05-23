@@ -12,7 +12,7 @@ class ProductsAdminTest {
     @org.junit.jupiter.api.Test
 
     @Test
-    void printInvoice() {
+    void discountTestForKeyboard() {
         ProductsAdmin productsAdmin = new ProductsAdmin();
         DecimalFormat df = new DecimalFormat("##.##");
         Map<Product, Integer> shoppingCart = new HashMap<>();
@@ -21,13 +21,13 @@ class ProductsAdminTest {
         shoppingCart.put(monitor, 2);
         shoppingCart.put(keyboard, 1);
         productsAdmin.setShoppingCart(shoppingCart);
-
+        productsAdmin.calculateInvoice(productsAdmin.getShoppingCart());
         Assertions.assertEquals("555.36", productsAdmin.printInvoice());
     }
 
     @org.junit.jupiter.api.Test
     @Test
-    void printInvoice2() {
+    void discountTestForDeskLamp() {
         ProductsAdmin productsAdmin = new ProductsAdmin();
         DecimalFormat df = new DecimalFormat("##.##");
         Map<Product, Integer> shoppingCart = new HashMap<>();
@@ -38,7 +38,7 @@ class ProductsAdminTest {
         shoppingCart.put(keyboard, 1);
         shoppingCart.put(deskLamp, 1);
         productsAdmin.setShoppingCart(shoppingCart);
-
+        productsAdmin.calculateInvoice(productsAdmin.getShoppingCart());
         Assertions.assertEquals("643.45", productsAdmin.printInvoice());
     }
 }

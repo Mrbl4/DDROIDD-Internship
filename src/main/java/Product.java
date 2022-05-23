@@ -19,13 +19,13 @@ public class Product {
 
     private void setShippingFee() {
         if (shippedFrom.equals("RO")){
-            this.shippingFee = Double.valueOf(Math.round(weight * 1/0.1));
+            this.shippingFee = (double) Math.round(weight * 1 / 0.1);
         }
         if (shippedFrom.equals("UK")){
-            this.shippingFee = Double.valueOf(Math.round(weight * 2/0.1));
+            this.shippingFee = (double) Math.round(weight * 2 / 0.1);
         }
         if (shippedFrom.equals("US")){
-            this.shippingFee = Double.valueOf(Math.round(weight * 3/0.1));
+            this.shippingFee = (double) Math.round(weight * 3 / 0.1);
         }
     }
 
